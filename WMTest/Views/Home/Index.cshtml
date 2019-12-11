@@ -1,0 +1,110 @@
+﻿
+@{/*
+    ViewBag.Title = "Index";*/
+}
+<script src="~/scripts/jquery-1.10.2.min.js"></script>
+
+<h2>Index</h2>
+
+<form action="/" method="post" enctype="multipart/form-data">
+
+    <label for="file">Filename:</label>
+    <input type="file" name="file" id="file" />
+
+    <input type="submit" />
+</form>
+ 
+
+
+ 
+    @if (ViewBag.MyProdList != null)
+    {
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Naziv</th>
+                <th>Opis</th>
+                <th>Kategorija</th>
+                <th>Proizvodjac</th>
+                <th>Dobavljac</th>
+                <th>Cena</th>
+            </tr>
+            @foreach (var item in ViewBag.MyProdList)
+            {
+                <tr>
+                    <td>@item.id</td>
+                    <td>@item.naziv</td>
+                    <td>@item.opis</td>
+                    <td>@item.kategorija</td>
+                    <td>@item.proizvodjac</td>
+                    <td>@item.dobavljac</td>
+                    <td>@item.cena</td>
+
+                </tr>
+
+            }
+        </table>
+            <button onclick="Save()">Sačuvaj proizvode iz fajla</button>
+
+            }
+
+
+            <h2>Products in db</h2>
+            <button onclick="Create()">Kreiraj novi proizvod</button>
+            @if (ViewBag.ViewModelList != null)
+
+            {
+
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Naziv</th>
+                        <th>Opis</th>
+                        <th>Kategorija</th>
+                        <th>Proizvodjac</th>
+                        <th>Dobavljac</th>
+                        <th>Cena</th>
+                    </tr>
+                    @foreach (var item in ViewBag.ViewModelList)
+                    {
+                        <tr>
+                            <td>@item.id</td>
+                            <td>@item.naziv</td>
+                            <td>@item.opis</td>
+                            <td>@item.kategorija</td>
+                            <td>@item.proizvodjac</td>
+                            <td>@item.dobavljac</td>
+                            <td>@item.cena</td>
+                            <td>
+                                <button onclick="Edit(@item.id)">Edit</button>
+                                <button onclick="Delete(@item.id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            }
+
+
+
+
+            <script>
+                var Edit = function (id) {
+                    debugger
+                    window.location.href = "Home/Edit?id=" + id;
+                }
+                var Save = function () {
+                    debugger
+                    window.location.href = "Home/SaveJSONToDB";
+                }
+
+                var Create = function () {
+                    debugger
+                    window.location.href = "Home/Create";
+                }
+                var Delete = function (id) {
+                    debugger
+                    window.location.href = "Home/Delete?id=" + id;
+                }
+            </script>
+

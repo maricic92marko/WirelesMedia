@@ -1,0 +1,36 @@
+﻿
+@{/*
+                ViewBag.Title = "Index";*/
+}
+
+<h2>EDIT</h2>
+
+
+@if (ViewBag.EditProd != null)
+{
+    <form action="Edit" method="post" id="EditProd">
+        <table>
+            <tr>
+                <th>Naziv</th>
+                <th>Opis</th>
+                <th>Kategorija</th>
+                <th>Proizvodjac</th>
+                <th>Dobavljac</th>
+                <th>Cena</th>
+            </tr>
+            <tr>
+                <td><input hidden required name="id" id="id" value="@ViewBag.EditProd[0].id" /></td>
+                <td><input required name="naziv" id="naziv" value="@ViewBag.EditProd[0].naziv" /></td>
+                <td><input required name="opis" id="opis" value="@ViewBag.EditProd[0].opis" /></td>
+                <td><input required name="kategorija" id="kategorija" value="@ViewBag.EditProd[0].kategorija" /></td>
+                <td><input required name="proizvodjac" id="proizvodjac" value="@ViewBag.EditProd[0].proizvodjac" /></td>
+                <td><input required name="dobavljac" id="dobavljac" value="@ViewBag.EditProd[0].dobavljac" /></td>
+                <td><input required name="cena" id="cena" value="@ViewBag.EditProd[0].cena" /></td>
+                <td><input type="submit" />
+</tr>
+        </table>
+    </form>
+}
+
+
+
