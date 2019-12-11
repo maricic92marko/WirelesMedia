@@ -22,8 +22,9 @@ namespace WMTest.Controllers
             try
             {
                 var prod = new Products();
-  
                 ViewBag.ViewModelList = prod.LoadFromDB(null);
+                ViewBag.ProdFromFile = prod.LoadProduct_JSON(Server.MapPath("~/ProductJSON"));
+                TempData["File"] = ViewBag.ProdFromFile;
                 return View();
             }
             catch (Exception e)
@@ -34,14 +35,28 @@ namespace WMTest.Controllers
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase file)
         {
-            var prod = new Products();
-            BinaryReader b = new BinaryReader(file.InputStream);
-            byte[] binData = b.ReadBytes(file.ContentLength);
-            string result = System.Text.Encoding.UTF8.GetString(binData);
-            ViewBag.MyProdList = prod.Product_JSON(result);
-            TempData["ProdJSONData"] = ViewBag.MyProdList;
-            ViewBag.ViewModelList = prod.LoadFromDB(null);
-            return View();
+            if (file != null)
+            {
+
+
+                var prod = new Products();
+                BinaryReader b = new BinaryReader(file.InputStream);
+                byte[] binData = b.ReadBytes(file.ContentLength);
+                string result = System.Text.Encoding.UTF8.GetString(binData);
+                ViewBag.MyProdList = prod.Product_JSON(result);
+                ViewBag.ProdFromFile = prod.LoadProduct_JSON(Server.MapPath("~/ProductJSON"));
+
+                TempData["ProdJSONData"] = ViewBag.MyProdList;
+                TempData["SaveFile"] = file;
+                TempData["File"] = ViewBag.ProdFromFile;
+                ViewBag.ViewModelList = prod.LoadFromDB(null);
+                return View();
+            }
+            else
+            {
+                return View();
+
+            }
         }
 
 
@@ -60,8 +75,20 @@ namespace WMTest.Controllers
             prod.CreateProd(collection);
             return RedirectToAction("Index");
         }
+        public ActionResult CreateProduct_JSON()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CreateProduct_JSON(FormCollection collection)
+        {
+            var prod = new Products();
+            var path = Path.Combine(Server.MapPath("~/ProductJSON"),
+            Guid.NewGuid().ToString() + ".txt");
+            prod.CreateProduct_JSON(path, collection);
+            return RedirectToAction("Index");
+        }
 
-       
         public ActionResult SaveJSONToDB()
         {
             try
@@ -70,12 +97,30 @@ namespace WMTest.Controllers
                 var prod = new Products();
                 prod.SaveJSONToDB(li.ToList());
                 return RedirectToAction("Index");
+
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index");
             }
         }
+
+        public ActionResult SaveJSONToFS()
+        {
+            try
+            {
+                var file = (HttpPostedFileWrapper)TempData["SaveFile"];
+                var prod = new Products();
+                file.SaveAs(Path.Combine(Server.MapPath("~/ProductJSON"),
+                Guid.NewGuid().ToString()+"_" +file.FileName));
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        
 
         // GET: Home/Edit/5
         public ActionResult Edit(int? id)
@@ -108,13 +153,9 @@ namespace WMTest.Controllers
         {
             try
             {
-               
                 var prod = new Products();
                 prod.UpdateProd(collection);
                 return RedirectToAction("Index");
-
- 
-
                 // TODO: Add update logic here
             }
             catch
@@ -123,6 +164,44 @@ namespace WMTest.Controllers
             }
         }
 
+
+
+
+        public ActionResult EditinFile(int id)
+        {
+            try
+            {
+                var li = (IEnumerable<Products>)TempData["File"];
+                var item = li.ToList().FirstOrDefault(x => x.id == id);
+                ViewBag.EditFileProd = item;
+                return View();
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
+        }
+        [HttpPost]
+        public ActionResult EditinFile(FormCollection collection)
+        {
+            try
+            {
+
+                var prod = new Products();
+                prod.EditProduct_JSON(collection);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
+        }
 
         // POST: Home/Delete/5
         public ActionResult Delete(int id)
@@ -140,5 +219,7 @@ namespace WMTest.Controllers
                 //return RedirectToAction("Index");
             }
         }
+
+
     }
 }

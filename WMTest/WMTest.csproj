@@ -160,6 +160,8 @@
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
+    <Content Include="Views\Home\EditinFile.cshtml" />
+    <Content Include="Views\Home\CreateProduct_JSON.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -169,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ProductJSON\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

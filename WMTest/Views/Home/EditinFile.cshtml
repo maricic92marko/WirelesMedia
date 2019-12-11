@@ -1,0 +1,34 @@
+﻿
+@{
+// ViewBag.Title = "EditinFile";
+}
+
+<h2>Edit in File</h2>
+
+
+@if (ViewBag.EditFileProd != null)
+{
+    <form action="EditinFile" method="post" id="EditProd">
+        <table>
+            <tr>
+                <th>Naziv</th>
+                <th>Opis</th>
+                <th>Kategorija</th>
+                <th>Proizvodjac</th>
+                <th>Dobavljac</th>
+                <th>Cena</th>
+            </tr>
+            <tr>
+                <td><input hidden required name="id" id="id" value="@ViewBag.EditFileProd.id" /></td>
+                <td><input required name="naziv" id="naziv" value="@ViewBag.EditFileProd.naziv" /></td>
+                <td><input required name="opis" id="opis" value="@ViewBag.EditFileProd.opis" /></td>
+                <td><input required name="kategorija" id="kategorija" value="@ViewBag.EditFileProd.kategorija" /></td>
+                <td><input required name="proizvodjac" id="proizvodjac" value="@ViewBag.EditFileProd.proizvodjac" /></td>
+                <td><input required name="dobavljac" id="dobavljac" value="@ViewBag.EditFileProd.dobavljac" /></td>
+                <td><input required name="cena" id="cena" value="@ViewBag.EditFileProd.cena" /></td>
+                <td><input hidden required name="filepath" id="filepath" value="@ViewBag.EditFileProd.filepath" /></td>
+                <td><input type="submit" />
+            </tr>
+        </table>
+    </form>
+}

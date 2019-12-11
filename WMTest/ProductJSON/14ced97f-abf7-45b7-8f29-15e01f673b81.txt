@@ -1,0 +1,13 @@
+{
+  "product": [
+    {
+      "id": 0,
+      "naziv": "wwww",
+      "opis": "1111",
+      "dobavljac": "1111",
+      "kategorija": "1111",
+      "proizvodjac": "1111",
+      "cena": "111"
+    }
+  ]
+}

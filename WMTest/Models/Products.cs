@@ -8,6 +8,8 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Data;
 using System.Web.Mvc;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Newtonsoft.Json;
 
 namespace WMTest.Models
 {
@@ -23,6 +25,7 @@ namespace WMTest.Models
         public string proizvodjac { get; set; }
         public string dobavljac { get; set; }
         public decimal cena { get; set; }
+        public string filepath { get; set; }
 
         public List<Products> Product_JSON(string result)
         {
@@ -45,6 +48,77 @@ namespace WMTest.Models
                 }
             }
             return ProdList;
+        }
+
+        public List<Products> LoadProduct_JSON(string path)
+        {
+            var ProdList = new List<Products>();
+            var dir = Directory.GetCurrentDirectory();
+
+            foreach (string file in Directory.EnumerateFiles(path, "*.txt"))
+            {
+                string contents = File.ReadAllText(file);
+                if (contents.Length > 0)
+                {
+                    JObject jObject = JObject.Parse(contents);
+                    JToken jUser = jObject["product"];
+                    for (int i = 0; i < jUser.Count(); i++)
+                    {
+                        var prod = new Products();
+                        prod.id = (int)jUser[i]["id"];
+                        prod.opis = (string)jUser[i]["opis"];
+                        prod.naziv = (string)jUser[i]["naziv"];
+                        prod.kategorija = (string)jUser[i]["kategorija"];
+                        prod.proizvodjac = (string)jUser[i]["proizvodjac"];
+                        prod.dobavljac = (string)jUser[i]["dobavljac"];
+                        prod.cena = (decimal)jUser[i]["cena"];
+                        prod.filepath = file;
+                        ProdList.Add(prod);
+                    }
+               
+                }
+            }
+            return ProdList;
+        }
+
+        public void EditProduct_JSON( FormCollection collection)
+        {
+            var ProdList = new List<Products>();
+            var dir = Directory.GetCurrentDirectory();
+                string contents = File.ReadAllText(collection["filepath"]);
+                dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(contents);
+                for (int i = 0; i < jsonObj["product"].Count; i++)
+                {
+                 if(jsonObj["product"][i]["id"] == collection["id"])
+                    {
+                    jsonObj["product"][i]["naziv"] = collection["naziv"]; ;
+                    jsonObj["product"][i]["opis"] = collection["opis"]; ;
+                    jsonObj["product"][i]["dobavljac"] = collection["dobavljac"]; ;
+                    jsonObj["product"][i]["kategorija"] = collection["kategorija"]; ;
+                    jsonObj["product"][i]["proizvodjac"] = collection["proizvodjac"]; ;
+                    jsonObj["product"][i]["cena"] = collection["cena"]; ;
+
+                    string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                        File.WriteAllText(collection["filepath"], output);
+                    }
+                }
+            
+        }
+
+        public void CreateProduct_JSON(string path,FormCollection collection)
+        {
+            dynamic productj = new JObject();
+            productj.id = 0;
+            productj.naziv = collection["naziv"];
+            productj.opis = collection["opis"];
+            productj.dobavljac = collection["dobavljac"];
+            productj.kategorija = collection["kategorija"];
+            productj.proizvodjac = collection["proizvodjac"];
+            productj.cena = decimal.Parse(collection["cena"].ToString());
+            dynamic p = new JObject();
+            var product = new JArray(productj);
+            p.product = product;
+            File.WriteAllText(path, p.ToString());
         }
 
         public void SaveJSONToDB(List<Products> List)
@@ -136,10 +210,7 @@ namespace WMTest.Models
             con.Close();
             return ViewModelList;
         }
-        public void InsertProd()
-        {
 
-        }
         public void UpdateProd(FormCollection collection)
         {
             try

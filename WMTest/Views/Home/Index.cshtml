@@ -11,7 +11,7 @@
     <label for="file">Filename:</label>
     <input type="file" name="file" id="file" />
 
-    <input type="submit" />
+    <input type="submit" value="Učitaj fajl" />
 </form>
  
 
@@ -45,11 +45,11 @@
             }
         </table>
             <button onclick="Save()">Sačuvaj proizvode iz fajla</button>
+            <button onclick="SaveFile()">Sačuvaj fajl</button>
+    }
 
-            }
 
-
-            <h2>Products in db</h2>
+            <h2>Proizvodi sačuvani u bazi</h2>
             <button onclick="Create()">Kreiraj novi proizvod</button>
             @if (ViewBag.ViewModelList != null)
 
@@ -86,6 +86,42 @@
             }
 
 
+<h2>Proizvodi u fajlovima</h2>
+<button onclick="CreateToJSON()">Kreiraj novi proizvod</button>
+@if (ViewBag.ProdFromFile != null)
+
+            {
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Naziv</th>
+            <th>Opis</th>
+            <th>Kategorija</th>
+            <th>Proizvodjac</th>
+            <th>Dobavljac</th>
+            <th>Cena</th>
+        </tr>
+        @foreach (var item in ViewBag.ProdFromFile)
+        {
+            <tr>
+                <td>@item.id</td>
+                <td>@item.naziv</td>
+                <td>@item.opis</td>
+                <td>@item.kategorija</td>
+                <td>@item.proizvodjac</td>
+                <td>@item.dobavljac</td>
+                <td>@item.cena</td>
+                <td>
+                    <button onclick="EditinFile(@item.id)">Edit</button>
+                    <button onclick="Delete(@item.id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </table>
+
+}
+
 
 
             <script>
@@ -93,14 +129,26 @@
                     debugger
                     window.location.href = "Home/Edit?id=" + id;
                 }
+                var EditinFile = function (id,path) {
+                    debugger
+                    window.location.href = "Home/EditinFile?id=" + id ;
+                }
                 var Save = function () {
                     debugger
                     window.location.href = "Home/SaveJSONToDB";
+                }
+                var SaveFile = function () {
+                    debugger
+                    window.location.href = "Home/SaveJSONToFS";
                 }
 
                 var Create = function () {
                     debugger
                     window.location.href = "Home/Create";
+                }                
+                var CreateToJSON = function () {
+                    debugger
+                    window.location.href = "Home/CreateProduct_JSON";
                 }
                 var Delete = function (id) {
                     debugger

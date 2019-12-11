@@ -1,0 +1,13 @@
+{
+  "product": [
+    {
+      "id": 0,
+      "naziv": "222",
+      "opis": "2222",
+      "dobavljac": "222",
+      "kategorija": "2222",
+      "proizvodjac": "2222",
+      "cena": 222.0
+    }
+  ]
+}

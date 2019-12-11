@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "CreateProduct_JSON";
+}
+
+<h2>Create1</h2>
+
+<form action="CreateProduct_JSON" method="POST" id="EditProd">
+    <table>
+        <tr>
+            <th>Naziv</th>
+            <th>Opis</th>
+            <th>Kategorija</th>
+            <th>Proizvodjac</th>
+            <th>Dobavljac</th>
+            <th>Cena</th>
+        </tr>
+        <tr>
+            <td><input required name="naziv" id="naziv" /></td>
+            <td><input required name="opis" id="opis" /></td>
+            <td><input required name="kategorija" id="kategorija" /></td>
+            <td><input required name="proizvodjac" id="proizvodjac" /></td>
+            <td><input required name="dobavljac" id="dobavljac" /></td>
+            <td><input required name="cena" id="cena" /></td>
+            <td><input type="submit" />
+        </tr>
+    </table>
+</form>
+
