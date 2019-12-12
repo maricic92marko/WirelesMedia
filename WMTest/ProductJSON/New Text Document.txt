@@ -1,24 +1,13 @@
 {
-	"product":[
-
-	     {
-        	"id": "1",
-	        "naziv": "b",
-        	"opis": "c",
-	        "kategorija": "d",        
-		"proizvodjac": "e",
-		"dobavljac": "f",
-		"cena":"123"
-	    },
-	     
-	    {
-        	"id": "2",
-	        "naziv": "b",
-        	"opis": "c",
-	        "kategorija": "d",        
-		"proizvodjac": "e",
-		"dobavljac": "f",
-		"cena":"123"
-	    }
-	]
+  "product": [
+    {
+      "id": "2",
+      "naziv": "dasdasd",
+      "opis": "asdasd",
+      "kategorija": "d",
+      "proizvodjac": "e",
+      "dobavljac": "f",
+      "cena": "123"
+    }
+  ]
 }

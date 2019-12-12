@@ -44,7 +44,7 @@
 
             }
         </table>
-            <button onclick="Save()">Sačuvaj proizvode iz fajla</button>
+            <button onclick="Save()">Sačuvaj proizvode iz fajla u bazu</button>
             <button onclick="SaveFile()">Sačuvaj fajl</button>
     }
 
@@ -76,8 +76,8 @@
                             <td>@item.dobavljac</td>
                             <td>@item.cena</td>
                             <td>
-                                <button onclick="Edit(@item.id)">Edit</button>
-                                <button onclick="Delete(@item.id)">Delete</button>
+                                <button onclick="Edit(@item.id)">Izmeni proizvod u bazi</button>
+                                <button onclick="Delete(@item.id)">Izbriši proizvod iz baze</button>
                             </td>
                         </tr>
                     }
@@ -113,8 +113,8 @@
                 <td>@item.dobavljac</td>
                 <td>@item.cena</td>
                 <td>
-                    <button onclick="EditinFile(@item.id)">Edit</button>
-                    <button onclick="Delete(@item.id)">Delete</button>
+                    <button onclick="EditinFile(@item.id)">Izmnei proizvod u fajlu</button>
+                    <button onclick="DeleteProduct_JSON(@item.id)">Obriši proizvod iz fajla</button>
                 </td>
             </tr>
         }
@@ -153,6 +153,10 @@
                 var Delete = function (id) {
                     debugger
                     window.location.href = "Home/Delete?id=" + id;
+                }
+                var DeleteProduct_JSON = function (id) {
+                    debugger
+                    window.location.href = "Home/DeleteProduct_JSON?id=" + id;
                 }
             </script>
 

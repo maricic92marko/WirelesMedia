@@ -55,7 +55,7 @@ namespace WMTest.Models
             var ProdList = new List<Products>();
             var dir = Directory.GetCurrentDirectory();
 
-            foreach (string file in Directory.EnumerateFiles(path, "*.txt"))
+            foreach (string file in Directory.EnumerateFiles(path, "*.*"))
             {
                 string contents = File.ReadAllText(file);
                 if (contents.Length > 0)
@@ -78,6 +78,7 @@ namespace WMTest.Models
                
                 }
             }
+
             return ProdList;
         }
 
@@ -107,6 +108,7 @@ namespace WMTest.Models
 
         public void CreateProduct_JSON(string path,FormCollection collection)
         {
+
             dynamic productj = new JObject();
             productj.id = 0;
             productj.naziv = collection["naziv"];
@@ -120,6 +122,36 @@ namespace WMTest.Models
             p.product = product;
             File.WriteAllText(path, p.ToString());
         }
+
+        public void DeleteProduct_JSON(string path, int id)
+        {
+
+            var ProdList = new List<Products>();
+            string contents = File.ReadAllText(path);
+            dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(contents);
+
+            if (jsonObj["product"].Count == 1)
+            {
+                File.Delete(path);
+            }
+            else
+            {
+
+
+                for (int i = 0; i < jsonObj["product"].Count; i++)
+                {
+
+                    if (jsonObj["product"][i]["id"] == id)
+                    {
+                        var val = jsonObj["product"][i].ToString();
+                        //jsonObj.Remove(jsonObj["product"][i].ToString());
+                        jsonObj["product"][i].Remove();
+                        string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                        File.WriteAllText(path, output);
+                    }
+                }
+            }
+            }
 
         public void SaveJSONToDB(List<Products> List)
         {

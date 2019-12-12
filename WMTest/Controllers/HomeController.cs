@@ -24,7 +24,6 @@ namespace WMTest.Controllers
                 var prod = new Products();
                 ViewBag.ViewModelList = prod.LoadFromDB(null);
                 ViewBag.ProdFromFile = prod.LoadProduct_JSON(Server.MapPath("~/ProductJSON"));
-                TempData["File"] = ViewBag.ProdFromFile;
                 return View();
             }
             catch (Exception e)
@@ -48,7 +47,6 @@ namespace WMTest.Controllers
 
                 TempData["ProdJSONData"] = ViewBag.MyProdList;
                 TempData["SaveFile"] = file;
-                TempData["File"] = ViewBag.ProdFromFile;
                 ViewBag.ViewModelList = prod.LoadFromDB(null);
                 return View();
             }
@@ -171,8 +169,9 @@ namespace WMTest.Controllers
         {
             try
             {
-                var li = (IEnumerable<Products>)TempData["File"];
-                var item = li.ToList().FirstOrDefault(x => x.id == id);
+                var prod = new Products();
+                var li = prod.LoadProduct_JSON(Server.MapPath("~/ProductJSON"));
+                var item = li.FirstOrDefault(x => x.id == id);
                 ViewBag.EditFileProd = item;
                 return View();
 
@@ -220,6 +219,22 @@ namespace WMTest.Controllers
             }
         }
 
-
+        public ActionResult DeleteProduct_JSON(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                var prod = new Products();
+                var li = prod.LoadProduct_JSON(Server.MapPath("~/ProductJSON"));
+                var item = li.FirstOrDefault(x => x.id == id);
+                prod.DeleteProduct_JSON( item.filepath,id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                throw e;
+                //return RedirectToAction("Index");
+            }
+        }
     }
 }
